@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
-import setDeck from '../utils/api'
+import { setDeck } from '../utils/api'
 
 export default class CreateDeck extends Component {
 
@@ -10,14 +10,21 @@ export default class CreateDeck extends Component {
 
     createDeck = () => {
 
-        let deckTitle = this.state.deckTitle// Check the title
-        let questions = []
+        let deckTitle = this.state.deckTitle // Check the title
 
+        let deck = {
+            title: deckTitle,
+            questions: []
+        }
 
-        setDeck({ deckTitle, questions })
+        setDeck( deckTitle, deck )
+        this.props.navigation.navigate('DeckView')
     }
 
 
+    checkTitleBeforeSubmit = () => {
+
+    }
 
 
     render() {

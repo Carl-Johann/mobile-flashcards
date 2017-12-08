@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Animated, Easing } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Animated, Easing, Platform } from 'react-native'
 
 
 export default class QuestionCard extends Component {
@@ -42,7 +42,7 @@ export default class QuestionCard extends Component {
 
                                 <View
                                     key={ card.endDeg }
-                                    style={[ styles.stackedCardsOutline,
+                                    style={[ styles.cardOutline,
                                         { transform: [{ rotate: card.endDeg + "deg" }] },
                                         /*{ transform: [{ rotate: "5rad" }] },*/
                                         { bottom: index === 0 ? 0 : 160 },
@@ -50,7 +50,7 @@ export default class QuestionCard extends Component {
                                     ]}
                                 >
                                     {/*<TouchableOpacity>*/}
-                                        <Text style={ styles.cardText }>
+                                        <Text style={[ styles.cardText, Platform.OS === 'ios' ? { fontWeight: "500" } : { fontWeight: "300" } ]}>
                                             { questionText }
                                         </Text>
                                     {/*</TouchableOpacity>*/}
@@ -85,47 +85,19 @@ export default class QuestionCard extends Component {
 
 const styles = StyleSheet.create({
     cardOutline: {
-        // padding: 18,
         height: 160,
-        // position: 'absolute',
         width: 220,
         borderWidth: 0.4,
         borderColor: 'rgba(0, 1, 0, 0.24)',
-        backgroundColor: '#15aa01',
+        // backgroundColor: '#15aa01',
+        backgroundColor: 'white',
         borderRadius: 18,
-
-        // transform: [{ rotate: '0deg'}],
 
         justifyContent: 'center',
         alignItems: 'center',
         shadowRadius: 4,
         shadowOpacity: 0.8,
-        shadowColor: 'rgba(0, 1, 0, 0.24)',
-
-        shadowOffset: {
-            width: 10,
-            height: 15
-        },
-
-        // marginBottom: 100,
-    },
-
-    stackedCardsOutline: {
-        // padding: 18,
-        // position: 'relative',
-        // marginBottom: 80 ,
-        // transform: [{ rotate: '-30deg'}],
-        // overFlow: true,
-        height: 160,
-        width: 220,
-        borderWidth: 0.4,
-        borderColor: 'rgba(0, 1, 0, 0.24)',
-        backgroundColor: '#15aa01',
-        borderRadius: 18,
-        justifyContent: 'center',
-        alignItems: 'center',
-        shadowRadius: 4,
-        shadowOpacity: 0.8,
+        // shadowColor: 'rgba(0, 1, 0, 0.24)',
         shadowColor: 'rgba(0, 1, 0, 0.24)',
 
         shadowOffset: {
@@ -136,10 +108,11 @@ const styles = StyleSheet.create({
 
 
     cardText: {
-        color: '#ffffff',
+        // color: '#65b032',
+        // fontWeight: "500",
+
+        color: 'black',
         textAlign: 'center',
-        // fontFamily: 'Helvetica-Light',
-        // fontFamily: 'Iowan Old Style',
         elevation: 10,
         fontSize: 15,
     }

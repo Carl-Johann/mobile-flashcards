@@ -23,6 +23,8 @@
     "expo": "^23.0.5",
     "react": "16.0.0",
     "react-native": "0.50.3",
+    "react-native-action-button": "^2.8.3",
+    "react-native-appstate-listener": "^1.0.0",
     "react-navigation": "^1.0.0-beta.21",
     "redux": "^3.7.2"
   }
