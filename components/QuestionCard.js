@@ -89,7 +89,6 @@ const styles = StyleSheet.create({
         width: 220,
         borderWidth: 0.4,
         borderColor: 'rgba(0, 1, 0, 0.24)',
-        // backgroundColor: '#15aa01',
         backgroundColor: 'white',
         borderRadius: 18,
 
@@ -97,7 +96,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         shadowRadius: 4,
         shadowOpacity: 0.8,
-        // shadowColor: 'rgba(0, 1, 0, 0.24)',
         shadowColor: 'rgba(0, 1, 0, 0.24)',
 
         shadowOffset: {

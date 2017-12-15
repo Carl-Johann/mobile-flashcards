@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, TouchableNativeFeedback, Platform} from 'react-native'
 import QuestionCard from './QuestionCard'
+import DeckView from './DeckView'
+
 import { StackNavigator, TabNavigator } from 'react-navigation'
-import DeckView from '../DeckView/DeckView'
+
 
 export default class CreateSelectionView extends Component {
 

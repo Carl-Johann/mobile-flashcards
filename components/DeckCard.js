@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, Platform, Animated, Easing, TouchableOpacity, TouchableNativeFeedback } from 'react-native'
 import { StackNavigator, TabNavigator } from 'react-navigation'
-import DeckView from '../DeckView/DeckView'
-import DetailDeckView from '../DetailDeckView/DetailDeckView'
+import DeckView from './DeckView'
+import DetailDeckView from './DetailDeckView'
 
 export default class DeckCard extends Component {
 
@@ -14,12 +14,6 @@ export default class DeckCard extends Component {
         Animated.timing(this.state.opacity, { duration: 300, toValue: 1.0 }).start()
     }
 
-
-
-    // cardPressed = (noob) => {
-    //     console.log(noob)
-    //     this.props.navigation.navigate('DetailDeckView')
-    // }
 
 
     render () {

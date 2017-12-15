@@ -34,7 +34,6 @@ export const setQuestion = ( deck, question, answer ) => {
                                       'answer': answer,
                                     }])
   }
-  console.log(newDeck)
 
   return AsyncStorage.mergeItem( DECK_STORAGE_KEY, JSON.stringify({
       [deck.title]: newDeck

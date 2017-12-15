@@ -8,6 +8,12 @@ export default class CreateDeck extends Component {
         deckTitle: '',
     }
 
+
+    static navigationOptions = ({ navigation }) => ({
+        headerTintColor: '#ffffff',
+        headerStyle: { backgroundColor: '#4fbf40' },
+    })
+
     createDeck = () => {
 
         let deckTitle = this.state.deckTitle // Check the title

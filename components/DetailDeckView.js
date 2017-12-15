@@ -17,28 +17,29 @@ export default class DetailDeckView extends Component {
 
     static navigationOptions = ({ navigation }) => ({
         title: navigation.state.params.deck.title || "Deck Detail",
+        headerTintColor: '#ffffff',
+        headerStyle: { backgroundColor: '#4fbf40' },
         headerRight:
-        <View style={{ marginRight: 15 }}>
+            <View style={{ marginRight: 15 }}>
 
-            { Platform.OS === 'ios' ?
+                { navigation.state.params.deck !== undefined && ( Platform.OS === 'ios' ?
 
-                <TouchableOpacity onPress={ () => navigation.navigate("CreateQuestion", { deck: navigation.state.params.deck }) }>
-                    <MaterialIcons name='add' color='white' size={ 35 }/>
-                </TouchableOpacity >
+                    <TouchableOpacity onPress={ () => navigation.navigate("CreateQuestion", { deck: navigation.state.params.deck }) }>
+                        <MaterialIcons name='add' color='white' size={ 35 }/>
+                    </TouchableOpacity >
 
-            :
+                :
 
-                <TouchableOpacity onPress={ () => navigation.navigate("CreateQuestion", { deck: navigation.state.params.deck }) } activeOpacity={ 0.75 }>
-                    <Entypo name='squared-plus' color={ 'white' } size={ 24 } />
-                </TouchableOpacity >
-            }
+                    <TouchableOpacity onPress={ () => navigation.navigate("CreateQuestion", { deck: navigation.state.params.deck }) } activeOpacity={ 0.75 }>
+                        <Entypo name='squared-plus' color={ 'white' } size={ 24 } />
+                    </TouchableOpacity >
+                )}
 
-        </View>
+            </View>
     })
 
 
     render () {
-
         const { deck } = this.props.navigation.state.params
 
 
@@ -57,7 +58,7 @@ export default class DetailDeckView extends Component {
                 <View style={ styles.startQuizButton } >
                     { Platform.OS === 'ios' ?
 
-                        <TouchableOpacity style={ styles.buttonContainerStyleiOS } onPress={ () => console.log("didClick TouchableOpacity") } >
+                        <TouchableOpacity style={ styles.buttonContainerStyleiOS } onPress={ () => this.props.navigation.navigate('QuizView')} >
                             <Text style={ styles.buttonTextStyle }>
                                 START QUIZ
                             </Text>
@@ -65,7 +66,7 @@ export default class DetailDeckView extends Component {
 
                     :
 
-                        <TouchableNativeFeedback onPress={ () => console.log("didClick TouchableNativeFeedback")}>
+                        <TouchableNativeFeedback onPress={ () => this.props.navigation.navigate('QuizView')} >
                             <View style={ styles.buttonStyleAndroid } >
                                 <Text style={ styles.buttonTextStyle }>
                                     START QUIZ

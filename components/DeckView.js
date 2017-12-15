@@ -104,6 +104,15 @@ const styles = StyleSheet.create({
 
     container: {
         flex: 1,
+
+        shadowRadius: 0,
+        shadowOpacity: 0,
+        shadowColor: 'transparent',
+
+        shadowOffset: {
+            width: 0,
+            height: 0
+        }
     },
 
     cardOutline: {
