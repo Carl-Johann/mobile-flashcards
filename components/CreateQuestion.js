@@ -1,11 +1,26 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, Platform, TouchableNativeFeedback, Animated, Easing } from 'react-native'
-import { setQuestion } from '../utils/api'
+import { setDeckInDetail, addQuestionToDeckInDetail } from '../actions/index'
+import { connect } from 'react-redux'
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, Platform, TouchableNativeFeedback, Animated, Easing, Picker } from 'react-native'
+import { setQuestion, getAllDecks } from '../utils/api'
 import { Ionicons, Entypo } from '@expo/vector-icons'
 
-import ShakeableInputField from './ShakeableInputField'
+import SearchBar from 'react-native-searchbar'
+import ShakeableInputFields from './ShakeableInputField/ShakeableInputFields';
+import SearchBarDeckList from './SearchBarDeckList/SearchBarDeckList';
+import DeckSearchAndInfo from './DeckSearchAndInfo/DeckSearchAndInfo';
+import DetailDeckView from '../components/DetailDeckView'
 
-export default class CreateQuestion extends Component {
+import { List, ListItem } from 'react-native-elements'
+
+
+
+class CreateQuestion extends Component {
+
+    static navigationOptions = ({ navigation }) => ({
+        headerTintColor: '#ffffff',
+        headerStyle: { backgroundColor: '#4fbf40' },
+    })
 
     state = {
         inputFields: {
@@ -18,109 +33,109 @@ export default class CreateQuestion extends Component {
                 status: false
             }
         },
+        decks: [],
 
-        // questionTextStatus: true,
-        // shakeDegreeQuestion: new Animated.Value(0.0),
+        searchedDecks: "",
+        isSearchBarOpen: true,
 
-        // answerTextStatus: true,
-        // shakeDegreeAnswer: new Animated.Value(0),
-
-        addButtonWidth: new Animated.Value(100),
-        addButtonOpacity: new Animated.Value(1),
-        addButtonHeight: new Animated.Value(35),
-
+        fadeOpacity: new Animated.Value(0),
+        initalDeckSelectDone: false
     }
 
+    componentDidMount() {
+        this.getDecks()
+        // console.log("this searchb1", this.searchBar)
+        // this.searchBar.textInput.blur()
+    }
 
-    static navigationOptions = ({ navigation }) => ({
-        headerTintColor: '#ffffff',
-        headerStyle: { backgroundColor: '#4fbf40' },
-    })
-
-
-
-
-
-
-
-    inputChange = ( inputField, inputFieldText ) => {
-        // console.log( inputFieldText, "at:", inputField )
-
-        let fields = this.state.inputFields
-        fields = {
-            ...fields,
-            [inputField]: {
-                ...fields[inputField],
-                text: inputFieldText
-            }
+    shouldComponentUpdate(nextProps, nextState) {
+        if ( !this.props.navigation.state.params ) {
+            nextState.searchedDecks === ""
+            ? nextState.isSearchBarOpen ? this.searchBar.show() : this.searchBar.hide()
+            : null
         }
 
-
-
-        this.setState({ inputFields: fields })
-
-
-        // switch( inputField ) {
-        // case 'questionText':
-        //     console.log(inputFieldText)
-        //     break
-        // case 'answerText':
-        //     console.log(inputFieldText)
-        //     this
-        //     break
-        // }
+        return true
     }
 
 
 
 
+    handleResults = (results) => {
+        this.setState({ searchedDecks: results })
+    }
 
-    handleAddQuestion = () => {
+    getDecks = () => {
+        getAllDecks( (responseDecks) => {
+            let decks = JSON.parse(responseDecks)
+            // console.log("decks")
+            let decksToAdd = []
+            Object.entries(decks).map( ([key, value]) => { decksToAdd.push( value ) })
 
-        if (this.checkFields()) {
-            // Both TextInputs are not empty
+            // decksToAdd.push({decks})
+            // console.log("decksToAdd", decksToAdd)
 
-            setQuestion(
-                this.props.navigation.state.params.deck,
-                this.state.questionText,
-                this.state.answerText
-            )
+            this.setState({ decks: decksToAdd })
+        })
+    }
 
-            Animated.parallel([
-                Animated.timing(this.state.addButtonWidth,   { duration: 349, toValue: 0 }),
-                Animated.timing(this.state.addButtonOpacity, { duration: 359, toValue: 0 }),
-                Animated.timing(this.state.addButtonHeight,  { duration: 1,   toValue: 0, delay: 349 }),
-            ]).start( () => this.props.navigation.goBack() )
-        }
+    handleAddQuestion = (inputFields) => {
+        setQuestion(
+            this.props.deckInDetail,
+            inputFields.question.text,
+            inputFields.answer.text
+        )
+
+
+        setTimeout(() => {
+            this.setState({
+                inputFields: {
+                    question: {
+                        text: '',
+                        status: false
+                    },
+                    answer: {
+                        text: '',
+                        status: false
+                    }
+                },
+                searchedDecks: "",
+                initalDeckSelectDone: false,
+            })
+                this.state.fadeOpacity.setValue(0)
+        }, 500)
+
+        this.props.addQuestionToDeckInDetail(
+            {
+                "answer": inputFields.answer.text,
+                "question": inputFields.question.text
+            }, this.props.deckInDetail
+        )
     }
 
 
 
-
-    checkFields = () => {
-        let questionText = this.state.questionText
-        let answerText = this.state.answerText
-
-        shouldContinue = true
-
+    handleRowPress = (deck) => {
         this.setState({
-            questionTextStatus: true,
-            answerTextStatus: true,
+            searchedDecks: "",
+            isSearchBarOpen: false,
         })
 
-        if (questionText.trim().length === 0 ) {
-             shouldContinue = false
-            this.setState({ questionTextStatus: false })
-            this.actiavteShake(this.state.shakeDegreeQuestion)
-        }
+        this.props.setDeckInDetail(deck)
 
-        if (answerText.trim().length === 0 ) {
-            shouldContinue = false
-            this.setState({ answerTextStatus: false })
-            this.actiavteShake(this.state.shakeDegreeAnswer)
-        }
+        if (!this.state.initalDeckSelectDone) this.setState({ initalDeckSelectDone: true })
+        Animated.timing(this.state.fadeOpacity, { duration: 300, toValue: 1 }).start()
 
-        return shouldContinue
+    }
+
+    changeSelectedDeck = () => {
+        Animated.timing(this.state.fadeOpacity, { duration: 150, toValue: 0 }).start( () => {
+            this.setState({ isSearchBarOpen: true })
+
+            // Remove the deck in detal
+            this.props.setDeckInDetail({ questions: [] })
+        })
+
     }
 
 
@@ -129,132 +144,88 @@ export default class CreateQuestion extends Component {
     render() {
 
         const { params } = this.props.navigation.state
-        const { inputFields, addButtonOpacity } = this.state
-
-
-        // const spinQuestion = this.state.shakeDegreeQuestion.interpolate({
-        //     inputRange: [-1, 1],
-        //     outputRange: ['-1deg', '1deg']
-        // })
-
-        // const spinAnswer = this.state.shakeDegreeAnswer.interpolate({
-        //     inputRange: [-1, 1],
-        //     outputRange: ['-1deg', '1deg']
-        // })
-
-        const buttonWidth = this.state.addButtonWidth.interpolate({
-            inputRange: [0, 100],
-            outputRange: ['0%', '100%']
-        })
+        const { inputFields, decks, searchedDecks, isSearchBarOpen, fadeOpacity, initalDeckSelectDone } = this.state
 
 
         return (
-            <TouchableOpacity onPress={ () => {
-                    if ( this.props.navigation.state.params ) {
-                        {/*this.refs.answerInput.blur()
-                        this.refs.questionInput.blur()*/}
+            <TouchableOpacity
+                onPress={ () => {
+                    if ( !this.props.navigation.state.params ) {
+                        // The view was navigated to from the 'TabNavigator'
+                        isSearchBarOpen ? this.searchBar.textInput.blur(): null
                     }
                 }}
                 style={{ flex: 1 }}
                 activeOpacity={ 1 }
             >
-
-            <Animated.View style={ styles.container } >
-
-
-                { this.props.navigation.state.params
-                ?
-                    <Animated.View>
-
-                        { Object.entries(inputFields).map( ([ key, value ]) => (
-                            <View style={{ marginBottom: 10 }} >
-                                <ShakeableInputField
-                                    placeholderText={ key.charAt(0).toUpperCase() + key.slice(1) }
-                                    textChange={ inputFieldText => this.inputChange(key, inputFieldText) }
-                                    inputField={ value }
+                <View>
+                    { this.props.navigation.state.params
+                    ?
+                        <View style={ styles.container } >
+                            <Animated.View>
+                                <ShakeableInputFields
+                                    inputFields={ inputFields }
+                                    goBack={ () => this.props.navigation.goBack() }
+                                    handleAdd={ inputFields => this.handleAddQuestion(inputFields) }
                                 />
-                            </View>
-                        )) }
-
-                        {/*<View style={{ marginBottom: 10 }} >
-                            <ShakeableInputField
-                                placeholderText='Question'
-                                textChange={ inputFieldText => this.inputChange('questionText', inputFieldText) }
-                                textValue={ questionText }
-                            />
-                        </View>
-                        <View>
-                            <ShakeableInputField
-                                placeholderText='Answer'
-                                textChange={ inputFieldText => this.inputChange('answerText', inputFieldText) }
-                                textValue={ answerText }
-
-                            />
-                        </View>*/}
-
-                        {/*<Animated.View style={{ transform: [{ rotate: spinQuestion }] }}>
-                            <TextInput
-                                value={ questionText }
-                                onChangeText={ (questionText) => this.setState({ questionText }) }
-                                placeholder={ Platform.OS === 'ios' ? "Question" : " Question" }
-                                ref={'questionInput'}
-                                style={[
-                                    Platform.OS === 'ios' ? styles.textInputfieldiOS : styles.textInputfieldAndroid,
-                                    questionTextStatus ? { borderColor: 'darkgray' } : { borderColor: 'red' }
-                                ]}
-                                underlineColorAndroid={ Platform.OS === 'android' ? questionTextStatus ? 'darkgray' : 'red' : 'transparent' }
-                            />
-                        </Animated.View>*/}
-
-                        {/*<Animated.View style={{ transform: [{ rotate: spinAnswer }] }}>
-                            <TextInput
-                                value={ answerText }
-                                onChangeText={ (answerText) => this.setState({ answerText }) }
-                                multiline = {true}
-                                ref={'answerInput'}
-                                placeholder={ Platform.OS === 'ios' ? "Answer" : " Answer" }
-                                style={[
-                                    Platform.OS === 'ios' ? styles.textInputfieldiOS : styles.textInputfieldAndroid,
-                                    answerTextStatus ? { borderColor: 'darkgray' } : { borderColor: 'red' },
-                                    { marginTop: 19 }
-                                ]}
-                                underlineColorAndroid={ Platform.OS === 'android' ? answerTextStatus ? 'darkgray' : 'red' : 'transparent' }
-                            />
-                        </Animated.View>*/}
-                    </Animated.View>
-                :
-                    <Text>Intet Deck </Text>
-                }
-
-
-                <View style={ styles.startQuizButton } >
-                    { Platform.OS === 'ios' ?
-                        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-
-                            <Animated.View style={{ width: buttonWidth, height: this.state.addButtonHeight }}>
-                                <TouchableOpacity style={ styles.buttonContainerStyleiOS } onPress={ () => this.handleAddQuestion()} >
-                                    <Animated.Text style={[ styles.buttonTextStyle, { opacity: addButtonOpacity } ]}>
-                                        ADD
-                                    </Animated.Text>
-                                </TouchableOpacity>
                             </Animated.View>
-
                         </View>
                     :
+                        <View >
+                             <View style={{ height: 32, zIndex: 10 }}>
 
-                        <TouchableNativeFeedback onPress={ () => this.handleAddQuestion() }>
-                            <View style={ styles.buttonStyleAndroid } >
-                                <Text style={ styles.buttonTextStyle }>
-                                    ADD
-                                </Text>
+                                <Animated.View style={{ alignItems: 'center', marginTop: 15 }}>
+                                    <Text style={{ margin: 0, fontSize: 25, selfAlign: 'center' }}> Create Question </Text>
+                                </Animated.View>
+
+                                <SearchBar
+                                    hideBack
+                                    showOnLoad
+                                    clearOnHide
+
+                                    data={ decks }
+                                    iOSPadding={ false }
+                                    animationDuration={ 400 }
+                                    selectionColor={ '#4fbf40' }
+                                    placeholder={ "Select Deck ..." }
+                                    ref={ (ref) => this.searchBar = ref }
+                                    handleChangeText={ results => this.handleResults(results) }
+                                />
                             </View>
-                        </TouchableNativeFeedback>
 
+                            <SearchBarDeckList
+                                decks={ decks }
+                                searchedDecks={ searchedDecks }
+                                isSearchBarOpen={ isSearchBarOpen }
+                                handleRowPress={ deck => this.handleRowPress(deck) }
+                            />
+
+
+                            <View style={ styles.deckInfoBody }>
+                                <DeckSearchAndInfo
+                                    inputFields={ inputFields }
+                                    titleTextOpacity={ fadeOpacity }
+                                    initalDeckSelectDone={ initalDeckSelectDone }
+                                    goBack={ () => this.props.navigation.goBack() }
+                                    changeSelectedDeck={ () => this.changeSelectedDeck() }
+                                    handleAdd={ inputFields => this.handleAddQuestion(inputFields) }
+                                />
+
+                                <Animated.View style={{ opacity: fadeOpacity, width: '100%' }}>
+                                    <View style={{ margin: 15 }}>
+                                        <ShakeableInputFields
+                                            inputFields={ inputFields }
+                                            shouldEmpty={ isSearchBarOpen }
+                                            goBack={ () => this.props.navigation.goBack() }
+                                            handleAdd={ inputFields => this.handleAddQuestion(inputFields) }
+                                        />
+                                    </View>
+                                </Animated.View>
+                            </View>
+                        </View>
                     }
+
                 </View>
-
-            </Animated.View>
-
             </TouchableOpacity>
         )
     }
@@ -262,74 +233,35 @@ export default class CreateQuestion extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         margin: 15,
         marginTop: 25,
     },
 
-    textInputfieldiOS: {
-        borderWidth: 0.9,
-        borderRadius: 3,
-        padding: 7,
-        justifyContent: 'center',
-        fontSize: 14
-
-    },
-
-    textInputfieldAndroid: {
-        borderRadius: 3,
-        padding: 7,
-        justifyContent: 'center',
-        fontSize: 14
-
-    },
-
-    explenationText: {
-        textAlign: 'center',
-        fontSize: 20,
-
-    },
-
-    actionButtonIcon: {
-        fontSize: 20,
-        height: 22,
-        color: 'white',
-    },
-
-
-    buttonContainerStyleiOS: {
-        backgroundColor: '#4fbf40',
-        shadowRadius: 4,
-        shadowOpacity: 0.8,
-        shadowColor: 'rgba(0, 1, 0, 0.24)',
-
-        justifyContent: 'center',
+    deckInfoBody: {
+        marginTop: 50,
+        width: '100%',
         alignItems: 'center',
-
-        height: 35,
-        borderRadius: 4,
-
-        shadowOffset: {
-            width: 5,
-            height: 7.5
-        }
-    },
-
-    buttonTextStyle: {
-        color: 'white',
-        fontWeight: 'bold',
-        textAlign: 'center',
-    },
-
-    buttonStyleAndroid: {
-        backgroundColor: '#4fbf40',
         justifyContent: 'center',
-
-        height: 35,
-        borderRadius: 0.8,
-    },
-
-    startQuizButton: {
-        marginTop: 9
-    },
+        position: 'absolute',
+    }
 })
+
+
+
+const mapStateToProps = ({ deckInDetail }) => {
+  return { deckInDetail }
+}
+
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setDeckInDetail: (deck) => dispatch(setDeckInDetail(deck)),
+    addQuestionToDeckInDetail: (question, deck) => dispatch(addQuestionToDeckInDetail(question, deck))
+  }
+}
+
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(CreateQuestion)

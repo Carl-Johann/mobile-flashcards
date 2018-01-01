@@ -1,81 +1,87 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { View, Text, StyleSheet, Title, Button, Platform, TouchableOpacity, TouchableNativeFeedback } from 'react-native'
 import { NavigationActions } from 'react-navigation'
-
+import { getAllDecks, getSpecificDeck } from '../utils/api'
 import { Ionicons, MaterialIcons, Entypo } from '@expo/vector-icons'
 import ActionButton from 'react-native-action-button';
 
 
-
-export default class DetailDeckView extends Component {
-
-
-    componentDidMount() {
-
-    }
-
+class DetailDeckView extends Component {
 
     static navigationOptions = ({ navigation }) => ({
-        title: navigation.state.params.deck.title || "Deck Detail",
+        title: "Deck Detail",
         headerTintColor: '#ffffff',
         headerStyle: { backgroundColor: '#4fbf40' },
-        headerRight:
-            <View style={{ marginRight: 15 }}>
-
-                { navigation.state.params.deck !== undefined && ( Platform.OS === 'ios' ?
-
-                    <TouchableOpacity onPress={ () => navigation.navigate("CreateQuestion", { deck: navigation.state.params.deck }) }>
-                        <MaterialIcons name='add' color='white' size={ 35 }/>
-                    </TouchableOpacity >
-
-                :
-
-                    <TouchableOpacity onPress={ () => navigation.navigate("CreateQuestion", { deck: navigation.state.params.deck }) } activeOpacity={ 0.75 }>
-                        <Entypo name='squared-plus' color={ 'white' } size={ 24 } />
-                    </TouchableOpacity >
-                )}
-
-            </View>
     })
 
+    state = {
+        deck: {
+            questions: []
+        }
+    }
 
-    render () {
-        const { deck } = this.props.navigation.state.params
+    render() {
+        const { navigation, goBackToFlatlist, } = this.props
+        const { deck } = this.state
+
+        const addButton = () => { return ( <Text style={ styles.buttonTextStyle }>ADD</Text> ) }
+        const goBackButton = () => { return ( <Text style={ styles.buttonTextStyle }>GO BACK</Text> ) }
+        const startQuizButton = () => { return ( <Text style={ styles.buttonTextStyle }> START QUIZ </Text> ) }
 
 
         return (
             <View style={ styles.container }>
-
-                <View>
-                    <Text style={ styles.textContainer }>
-                        <Text style={{ fontWeight: 'bold' }}>Title: </Text> { deck.title }
-                    </Text>
-                    <Text style={ styles.textContainer }>
-                        <Text style={{ fontWeight: 'bold' }}>Number of questions: </Text> { deck.questions.length }
-                    </Text>
-                </View>
-
-                <View style={ styles.startQuizButton } >
-                    { Platform.OS === 'ios' ?
-
-                        <TouchableOpacity style={ styles.buttonContainerStyleiOS } onPress={ () => this.props.navigation.navigate('QuizView')} >
-                            <Text style={ styles.buttonTextStyle }>
-                                START QUIZ
+                    { this.props.deckInDetail !== undefined && (
+                        <View>
+                            <Text style={ styles.textContainer }>
+                                <Text style={{ fontWeight: 'bold' }}>Deck Title: </Text> { this.props.deckInDetail.title }
                             </Text>
-                        </TouchableOpacity>
+                            <Text style={ styles.textContainer }>
+                                <Text style={{ fontWeight: 'bold' }}>Number of Questions: </Text> { this.props.deckInDetail.questions.length }
+                            </Text>
+                        </View>
+                    ) }
 
-                    :
+                    <View style={ styles.startQuizButton } >
+                        { Platform.OS === 'ios' ?
+                            <View>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <TouchableOpacity style={[ styles.buttonContainerStyleiOS, { width: '49%', marginBottom: '2%' } ]} onPress={ () => goBackToFlatlist() } >
+                                        { goBackButton() }
+                                    </TouchableOpacity>
 
-                        <TouchableNativeFeedback onPress={ () => this.props.navigation.navigate('QuizView')} >
-                            <View style={ styles.buttonStyleAndroid } >
-                                <Text style={ styles.buttonTextStyle }>
-                                    START QUIZ
-                                </Text>
+                                    <View style={{ width: '2%' }} />
+
+                                    <TouchableOpacity style={[ styles.buttonContainerStyleiOS, { width: '49%', marginBottom: '2%' } ]} onPress={ () => navigation.navigate("CreateQuestionFromDeckDetail", { deck }) } >
+                                        { addButton() }
+                                    </TouchableOpacity>
+                                </View>
+
+                                <TouchableOpacity style={ styles.buttonContainerStyleiOS } onPress={ () => navigation.navigate('QuizView', { deck })} >
+                                    { startQuizButton() }
+                                </TouchableOpacity>
                             </View>
-                        </TouchableNativeFeedback>
-                    }
-                </View>
+                        :
+                            <View>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <TouchableNativeFeedback style={[ styles.buttonStyleAndroid, { width: '49%', marginBottom: '2%' } ]} onPress={ () => goBackToFlatlist() } >
+                                        { goBackButton() }
+                                    </TouchableNativeFeedback>
 
+                                    <View style={{ width: '2%' }} />
+
+                                    <TouchableNativeFeedback style={[ styles.buttonStyleAndroid, { width: '49%', marginBottom: '2%' } ]} onPress={ () => navigation.navigate("CreateQuestionFromDeckDetail", { deck }) } >
+                                        { addButton() }
+                                    </TouchableNativeFeedback>
+                                </View>
+
+                                <TouchableNativeFeedback style={ styles.buttonStyleAndroid } onPress={ () => navigation.navigate('QuizView', { deck })} >
+                                    { startQuizButton() }
+                                </TouchableNativeFeedback>
+                            </View>
+                        }
+                    </View>
             </View>
 
         )
@@ -85,13 +91,8 @@ export default class DetailDeckView extends Component {
 }
 
 
-const styles = StyleSheet.create({
 
-    actionButtonIcon: {
-        fontSize: 20,
-        height: 22,
-        color: 'white',
-    },
+const styles = StyleSheet.create({
 
     container: {
         flex: 1,
@@ -101,19 +102,16 @@ const styles = StyleSheet.create({
 
     buttonContainerStyleiOS: {
         backgroundColor: '#4fbf40',
-        shadowRadius: 4,
-        shadowOpacity: 0.8,
-        shadowColor: 'rgba(0, 1, 0, 0.24)',
-
         justifyContent: 'center',
 
         height: 35,
         borderRadius: 4,
 
-        shadowOffset: {
-            width: 5,
-            height: 7.5
-        }
+
+        shadowRadius: 4,
+        shadowOpacity: 0.8,
+        shadowColor: 'rgba(0, 1, 0, 0.24)',
+        shadowOffset: { width: 5, height: 7.5 }
     },
 
     buttonTextStyle: {
@@ -141,3 +139,10 @@ const styles = StyleSheet.create({
     },
 
 })
+
+
+const mapStateToProps = ({ deckInDetail }) => {
+  return { deckInDetail }
+}
+
+export default connect( mapStateToProps )(DetailDeckView)
