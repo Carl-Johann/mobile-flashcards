@@ -18,7 +18,6 @@ class QuizView extends Component {
         currentQuestionIndex: 0,
         numberOfCorrectQuestions: 0,
 
-        shouldShowAnswer: false
     }
 
 
@@ -33,7 +32,7 @@ class QuizView extends Component {
             this.setState({
                 currentQuestionIndex: currentQuestionIndex += 1,
                 numberOfCorrectQuestions: answerStatus ? numberOfCorrectQuestions += 1 : numberOfCorrectQuestions,
-                shouldShowAnswer: false
+                // shouldShowAnswer: false
             })
         }
 
@@ -44,22 +43,21 @@ class QuizView extends Component {
         }
     }
 
-    handleShowAnswer = () => { this.setState({ shouldShowAnswer: true }) }
-
     handleRestart = () => {
         this.setState({
             currentQuestionIndex: 0,
             numberOfCorrectQuestions: 0,
-            shouldShowAnswer: false
         })
     }
 
     handleGoBack = () => { this.props.navigation.navigate('DeckView') }
 
 
+
+
     render() {
         const { deckInDetail } = this.props
-        const { currentQuestionIndex, numberOfCorrectQuestions, shouldShowAnswer } = this.state
+        const { currentQuestionIndex, numberOfCorrectQuestions } = this.state
 
         return (
             <View style={{ flex: 1 }} >
@@ -67,9 +65,7 @@ class QuizView extends Component {
                     { currentQuestionIndex < deckInDetail.questions.length
                     ?
                         <CardSlide
-                            shouldShowAnswer={ shouldShowAnswer }
                             currentQuestionIndex={ currentQuestionIndex }
-                            handleShowAnswer={ () => this.handleShowAnswer() }
                             totalNumberOfQuestions={ deckInDetail.questions.length }
                             currentQuestion={ deckInDetail.questions[currentQuestionIndex] }
                             handleQuestionAnswer={ answerStatus => this.handleQuestionAnswer(answerStatus) }

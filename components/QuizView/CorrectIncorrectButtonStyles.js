@@ -6,7 +6,7 @@ const CorrectIncorrectButtonStyles = StyleSheet.create({
         width: 70,
         zIndex: 10,
         height: 70,
-        bottom: -142.5,
+        bottom: -140,
         borderRadius: 35,
         alignItems: 'center',
         backgroundColor: 'rgb(233,233,239)',

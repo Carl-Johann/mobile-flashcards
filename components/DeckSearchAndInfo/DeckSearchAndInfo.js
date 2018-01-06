@@ -14,7 +14,7 @@ class DeckSearchAndInfo extends Component {
     }
 
     render () {
-        const { editSelectedDeck, deckInDetail, initalDeckSelectDone, titleTextOpacity, inputFields, handleAdd } = this.props
+        const { changeSelectedDeck, deckInDetail, initalDeckSelectDone, titleTextOpacity, inputFields, handleAdd } = this.props
 
         return (
             <View style={{ flexDirection: 'row', margin: 15 }}>
@@ -28,11 +28,11 @@ class DeckSearchAndInfo extends Component {
                 <Animated.View style={{ justifyContent: 'right', width: 65 }}>
                     { Platform.OS === 'ios'
                     ?
-                        <TouchableOpacity onPress={ () => editSelectedDeck() } style={ styles.editButton } >
+                        <TouchableOpacity onPress={ () => changeSelectedDeck() } style={ styles.editButton } >
                             { this.editField() }
                         </TouchableOpacity>
                     :
-                        <TouchableNativeFeedback onPress={ () => editSelectedDeck() } style={ styles.editButton } >
+                        <TouchableNativeFeedback onPress={ () => changeSelectedDeck() } style={ styles.editButton } >
                             { this.editField() }
                         </TouchableNativeFeedback>
                     }

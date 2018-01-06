@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 import { View } from 'react-native'
+import { connect } from 'react-redux'
+import { setDeck } from '../../utils/api'
+import { addDeck } from '../../actions/index'
 import ShakeableInputFields from './../ShakeableInputField/ShakeableInputFields'
 
-export default class CreateDeck extends Component {
+class CreateDeck extends Component {
     static navigationOptions = ({ navigation }) => ({
         headerTintColor: '#ffffff',
         headerStyle: { backgroundColor: '#4fbf40' },
@@ -18,6 +21,12 @@ export default class CreateDeck extends Component {
     }
 
     handleAddDeck = (inputFields) => {
+        let deck = {
+            title: inputFields.title.text,
+            questions: []
+        }
+
+        setDeck( (createdDeck) => { this.props.addDeck(createdDeck) }, deck )
 
         setTimeout(() => {
             this.setState({
@@ -30,10 +39,6 @@ export default class CreateDeck extends Component {
             })
         }, 500)
 
-        let deck = {
-            title: inputFields.title.text,
-            questions: []
-        }
     }
 
 
@@ -51,3 +56,18 @@ export default class CreateDeck extends Component {
         )
     }
 }
+
+const mapStateToProps = ({ deckInDetail }) => {
+  return { deckInDetail }
+}
+
+
+const mapDispatchToProps = (dispatch) => {
+  return { addDeck: (deck) => dispatch(addDeck(deck)) }
+}
+
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(CreateDeck)

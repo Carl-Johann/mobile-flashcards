@@ -5,7 +5,7 @@ import DeckCard from './DeckCard'
 import DetailDeckView from '../DetailDeckView'
 
 
-const ClickableDeckViewCard = ({ isItemDisabled, handleFlip, flipYValueFront, opacityFront, flipYValueBack, deck, navigation, cardWidth, cardHeight, opacityBack, cardFlipped }) => {
+const ClickableDeckViewCard = ({ isItemDisabled, handleFlip, disabled, flipYValueFront, opacityFront, flipYValueBack, deck, navigation, cardWidth, cardHeight, opacityBack, cardFlipped }) => {
 
 
     centerView = () => {
@@ -16,7 +16,7 @@ const ClickableDeckViewCard = ({ isItemDisabled, handleFlip, flipYValueFront, op
                     opacity: opacityFront
                 }}>
                     <DeckCard
-                        deck={ deck[1] }
+                        deck={ deck }
                         navigation={ navigation }
                     />
                 </Animated.View>
@@ -31,7 +31,7 @@ const ClickableDeckViewCard = ({ isItemDisabled, handleFlip, flipYValueFront, op
                     transform: [{ rotateY: flipYValueBack }],
                 }}>
                     <DetailDeckView
-                        deck={ deck[1] }
+                        deck={ deck }
                         navigation={ navigation }
                         goBackToFlatlist={ () => handleFlip(false) }
                     />

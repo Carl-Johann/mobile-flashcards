@@ -6,16 +6,16 @@ import DetailDeckView from '../DetailDeckView'
 
 const DeckCard = ({ deck }) => {
 
-        return (
-            <Animated.View style={ styles.cardOutline } >
-                <Text style={ styles.titleCardText }>
-                    { deck.title }
-                </Text>
-                <Text style={ styles.questionsLengthCardText }>
-                    { deck.questions.length === 1 ? "1 question" : `${deck.questions.length} questions` }
-                </Text>
-            </Animated.View>
-        )
+    return (
+        <Animated.View style={ styles.cardOutline } >
+            <Text style={ styles.titleCardText }>
+                { deck.title }
+            </Text>
+            <Text style={ styles.questionsLengthCardText }>
+                { deck.questions.length === 1 ? "1 question" : `${deck.questions.length} questions` }
+            </Text>
+        </Animated.View>
+    )
 }
 
 const styles = StyleSheet.create({

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { setDeckInDetail, addQuestionToDeckInDetail } from '../actions/index'
+import { setDeckInDetail, addQuestionToDeckInDetail, addQuestionDeck } from '../actions/index'
 import { connect } from 'react-redux'
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, Platform, TouchableNativeFeedback, Animated, Easing, Picker } from 'react-native'
 import { setQuestion, getAllDecks } from '../utils/api'
@@ -33,19 +33,13 @@ class CreateQuestion extends Component {
                 status: false
             }
         },
-        decks: [],
+        // decks: [],
 
         searchedDecks: "",
         isSearchBarOpen: true,
 
         fadeOpacity: new Animated.Value(0),
         initalDeckSelectDone: false
-    }
-
-    componentDidMount() {
-        this.getDecks()
-        // console.log("this searchb1", this.searchBar)
-        // this.searchBar.textInput.blur()
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -61,23 +55,13 @@ class CreateQuestion extends Component {
 
 
 
+
+
+
     handleResults = (results) => {
         this.setState({ searchedDecks: results })
     }
 
-    getDecks = () => {
-        getAllDecks( (responseDecks) => {
-            let decks = JSON.parse(responseDecks)
-            // console.log("decks")
-            let decksToAdd = []
-            Object.entries(decks).map( ([key, value]) => { decksToAdd.push( value ) })
-
-            // decksToAdd.push({decks})
-            // console.log("decksToAdd", decksToAdd)
-
-            this.setState({ decks: decksToAdd })
-        })
-    }
 
     handleAddQuestion = (inputFields) => {
         setQuestion(
@@ -105,11 +89,16 @@ class CreateQuestion extends Component {
                 this.state.fadeOpacity.setValue(0)
         }, 500)
 
-        this.props.addQuestionToDeckInDetail(
+        this.props.addQuestionToDeckInDetail({
+            "answer": inputFields.answer.text,
+            "question": inputFields.question.text
+        }, this.props.deckInDetail )
+
+        this.props.addQuestionDeck( this.props.deckInDetail.id,
             {
                 "answer": inputFields.answer.text,
                 "question": inputFields.question.text
-            }, this.props.deckInDetail
+            }
         )
     }
 
@@ -144,7 +133,7 @@ class CreateQuestion extends Component {
     render() {
 
         const { params } = this.props.navigation.state
-        const { inputFields, decks, searchedDecks, isSearchBarOpen, fadeOpacity, initalDeckSelectDone } = this.state
+        const { inputFields, searchedDecks, isSearchBarOpen, fadeOpacity, initalDeckSelectDone } = this.state
 
 
         return (
@@ -183,7 +172,7 @@ class CreateQuestion extends Component {
                                     showOnLoad
                                     clearOnHide
 
-                                    data={ decks }
+                                    data={ this.props.reduxDecks }
                                     iOSPadding={ false }
                                     animationDuration={ 400 }
                                     selectionColor={ '#4fbf40' }
@@ -194,7 +183,7 @@ class CreateQuestion extends Component {
                             </View>
 
                             <SearchBarDeckList
-                                decks={ decks }
+                                decks={ this.props.reduxDecks }
                                 searchedDecks={ searchedDecks }
                                 isSearchBarOpen={ isSearchBarOpen }
                                 handleRowPress={ deck => this.handleRowPress(deck) }
@@ -248,14 +237,18 @@ const styles = StyleSheet.create({
 
 
 
-const mapStateToProps = ({ deckInDetail }) => {
-  return { deckInDetail }
+const mapStateToProps = ({ deckInDetail, reduxDecks }) => {
+  return {
+      deckInDetail,
+      reduxDecks
+    }
 }
 
 
 const mapDispatchToProps = (dispatch) => {
   return {
     setDeckInDetail: (deck) => dispatch(setDeckInDetail(deck)),
+    addQuestionDeck: (deckId, question) => dispatch(addQuestionDeck(deckId, question)),
     addQuestionToDeckInDetail: (question, deck) => dispatch(addQuestionToDeckInDetail(question, deck))
   }
 }

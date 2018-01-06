@@ -38,7 +38,6 @@ export default class DeckViewCard extends Component {
 
 
     handleFlip = (shouldDisable) => {
-        // console.log("should", shouldDisable)
         this.props.disableMe(shouldDisable, this.props.deck)
 
         shouldDisable ? this.setState({ cardFlipped: true }) : null
@@ -71,20 +70,20 @@ export default class DeckViewCard extends Component {
 
         return (
                 <Animated.View style={{
-                    height: cardHeight,
-                    width: cardWidth,
                     marginBottom: 7,
+                    width: cardWidth,
+                    height: cardHeight,
                 }} >
                     <ClickableDeckViewCard
                         deck={ deck }
-                        cardWidth={ cardWidth }
+                        cardWidth={ cardWidth  }
                         navigation={ navigation }
-                        cardHeight={ cardHeight }
+                        cardHeight={ cardHeight  }
                         opacityBack={ opacityBack }
-                        cardFlipped={ cardFlipped }
+                        cardFlipped={ cardFlipped  }
                         opacityFront={ opacityFront }
                         isItemDisabled={ isItemDisabled }
-                        flipYValueBack={ flipYValueBack }
+                        flipYValueBack={ flipYValueBack  }
                         flipYValueFront={ flipYValueFront }
                         handleFlip={ status => this.handleFlip(status) }
                     />

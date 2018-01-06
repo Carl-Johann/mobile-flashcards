@@ -1,36 +1,44 @@
 import React from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, Animated } from 'react-native'
 import CorrectIncorrectButtonStyles from './CorrectIncorrectButtonStyles'
 
-const CorrectIncorrectButtons = ({ handleQuestionAnswer, currentQuestionIndex, totalNumberOfQuestions }) => {
+const CorrectIncorrectButtons = ({ handleQuestionAnswer,  currentQuestionIndex, totalNumberOfQuestions }) => {
     const styles = CorrectIncorrectButtonStyles
 
-    return (
-        <View style={ styles.buttonContainer }>
+    // const flipDegValue = flipValue.interpolate({
+    //     inputRange: [0, 180],
+    //     outputRange: ['0deg', '180deg']
+    // })
 
-            <View style={[ styles.questionCounterCircle, styles.defaultShadow ]}>
-                <Text style={{ textAlign: 'center', width: 50, bottom: -26.5 }}>{ currentQuestionIndex + 1 } / { totalNumberOfQuestions } </Text>
-            </View>
+    return (
+        // <Animated.View style={[ styles.buttonContainer, { transform: [{ rotateY: flipDegValue }], } ]}>
+        <Animated.View style={[ styles.buttonContainer ]}>
+
+            <Animated.View style={[ styles.questionCounterCircle, styles.defaultShadow ]}>
+                <Animated.Text style={{ textAlign: 'center', width: 50, bottom: -26.5 }}>
+                    { currentQuestionIndex + 1 } / { totalNumberOfQuestions }
+                </Animated.Text>
+            </Animated.View>
 
             <TouchableOpacity
-                style={[ styles.answerButton, styles.defaultShadow, { backgroundColor: 'green', marginBottom: 15 } ]}
+                style={[ styles.answerButton, styles.defaultShadow, { backgroundColor: 'green', marginBottom: 10 } ]}
                 onPress={ () => handleQuestionAnswer(true) }
             >
-                <Text styles={ styles.answerButtonText }>
+                <Animated.Text styles={ styles.answerButtonText }>
                     Correct
-                </Text>
+                </Animated.Text>
             </TouchableOpacity>
 
             <TouchableOpacity
                 style={[ styles.answerButton, styles.defaultShadow, { backgroundColor: 'red' } ]}
                 onPress={ () => handleQuestionAnswer(false) }
             >
-                <Text styles={ styles.answerButtonText }>
+                <Animated.Text styles={ styles.answerButtonText }>
                     Incorrect
-                </Text>
+                </Animated.Text>
             </TouchableOpacity>
 
-        </View>
+        </Animated.View>
     )
 }
 

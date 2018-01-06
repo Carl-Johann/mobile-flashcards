@@ -15,15 +15,9 @@ class DetailDeckView extends Component {
         headerStyle: { backgroundColor: '#4fbf40' },
     })
 
-    state = {
-        deck: {
-            questions: []
-        }
-    }
 
     render() {
         const { navigation, goBackToFlatlist, } = this.props
-        const { deck } = this.state
 
         const addButton = () => { return ( <Text style={ styles.buttonTextStyle }>ADD</Text> ) }
         const goBackButton = () => { return ( <Text style={ styles.buttonTextStyle }>GO BACK</Text> ) }
@@ -53,12 +47,12 @@ class DetailDeckView extends Component {
 
                                     <View style={{ width: '2%' }} />
 
-                                    <TouchableOpacity style={[ styles.buttonContainerStyleiOS, { width: '49%', marginBottom: '2%' } ]} onPress={ () => navigation.navigate("CreateQuestionFromDeckDetail", { deck }) } >
+                                    <TouchableOpacity style={[ styles.buttonContainerStyleiOS, { width: '49%', marginBottom: '2%' } ]} onPress={ () => navigation.navigate("CreateQuestionFromDeckDetail", { deck: this.props.deckInDetail }) } >
                                         { addButton() }
                                     </TouchableOpacity>
                                 </View>
 
-                                <TouchableOpacity style={ styles.buttonContainerStyleiOS } onPress={ () => navigation.navigate('QuizView', { deck })} >
+                                <TouchableOpacity style={ styles.buttonContainerStyleiOS } onPress={ () => navigation.navigate('QuizView', { deck: this.props.deckInDetail }) } >
                                     { startQuizButton() }
                                 </TouchableOpacity>
                             </View>
@@ -71,12 +65,12 @@ class DetailDeckView extends Component {
 
                                     <View style={{ width: '2%' }} />
 
-                                    <TouchableNativeFeedback style={[ styles.buttonStyleAndroid, { width: '49%', marginBottom: '2%' } ]} onPress={ () => navigation.navigate("CreateQuestionFromDeckDetail", { deck }) } >
+                                    <TouchableNativeFeedback style={[ styles.buttonStyleAndroid, { width: '49%', marginBottom: '2%' } ]} onPress={ () => navigation.navigate("CreateQuestionFromDeckDetail", { deck: this.props.deckInDetail }) } >
                                         { addButton() }
                                     </TouchableNativeFeedback>
                                 </View>
 
-                                <TouchableNativeFeedback style={ styles.buttonStyleAndroid } onPress={ () => navigation.navigate('QuizView', { deck })} >
+                                <TouchableNativeFeedback style={ styles.buttonStyleAndroid } onPress={ () => navigation.navigate('QuizView', { deck: this.props.deckInDetail }) } >
                                     { startQuizButton() }
                                 </TouchableNativeFeedback>
                             </View>
