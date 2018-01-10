@@ -57,7 +57,6 @@ export default class CardSlide extends Component {
                     { isHidden
                     ?
                         <ShowAnswerButton
-                            /*handleShowAnswer={ () => handleShowAnswer() }*/
                             handleShowAnswer={ () => this.rotateAnswer(false) }
                         />
                     :
@@ -67,7 +66,6 @@ export default class CardSlide extends Component {
 
                 <Animated.View style={{ flex: 1 }}>
                     <CorrectIncorrectButtons
-                        /*style={{ flex: 1 }}*/
                         currentQuestionIndex={ currentQuestionIndex }
                         totalNumberOfQuestions={ totalNumberOfQuestions }
                         handleQuestionAnswer={ answerStatus => {

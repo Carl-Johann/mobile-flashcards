@@ -15,4 +15,4 @@
 - Once the app has started up, click 'Allow' push notifications, as that feature won't work if it doesn't have permissison.
 
 ----------
-**Note!!! <br>** Very little testing has been done on the Android simulator as it has been causing me alot of trouble and wouldn't stop throwing nonsense error early on.
+**Note!!! <br>** Very little testing has been done on the Android simulator as it has been causing me alot of trouble and wouldn't stop throwing nonsense error early on. <br>Also, errors have been occurring and styling is off on Iphone X(10)

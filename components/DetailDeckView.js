@@ -41,7 +41,8 @@ class DetailDeckView extends Component {
                         { Platform.OS === 'ios' ?
                             <View>
                                 <View style={{ flexDirection: 'row' }}>
-                                    <TouchableOpacity style={[ styles.buttonContainerStyleiOS, { width: '49%', marginBottom: '2%' } ]} onPress={ () => goBackToFlatlist() } >
+                                    {/*<TouchableOpacity style={[ styles.buttonContainerStyleiOS, { width: '49%', marginBottom: '2%' } ]} onPress={ () => goBackToFlatlist() } >*/}
+                                    <TouchableOpacity style={[ styles.buttonContainerStyleiOS, { width: '49%', marginBottom: '2%' } ]} onPress={ () => { if (goBackToFlatlist === undefined) { this.props.navigation.navigate("DeckView") } else { goBackToFlatlist() } }} >
                                         { goBackButton() }
                                     </TouchableOpacity>
 

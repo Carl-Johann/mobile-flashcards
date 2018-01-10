@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { View } from 'react-native'
 import { connect } from 'react-redux'
 import { setDeck } from '../../utils/api'
-import { addDeck } from '../../actions/index'
+import { addDeck, setDeckInDetail } from '../../actions/index'
 import ShakeableInputFields from './../ShakeableInputField/ShakeableInputFields'
 
 class CreateDeck extends Component {
@@ -27,6 +27,7 @@ class CreateDeck extends Component {
         }
 
         setDeck( (createdDeck) => { this.props.addDeck(createdDeck) }, deck )
+        this.props.setDeckInDetail(deck)
 
         setTimeout(() => {
             this.setState({
@@ -49,7 +50,7 @@ class CreateDeck extends Component {
             <View style={{ margin: 15 }}>
                 <ShakeableInputFields
                     inputFields={ inputFields }
-                    goBack={ () => this.props.navigation.goBack() }
+                    goBack={ () => this.props.navigation.navigate("DetailDeckView") }
                     handleAdd={ inputFields => this.handleAddDeck(inputFields) }
                 />
             </View>
@@ -63,7 +64,10 @@ const mapStateToProps = ({ deckInDetail }) => {
 
 
 const mapDispatchToProps = (dispatch) => {
-  return { addDeck: (deck) => dispatch(addDeck(deck)) }
+  return {
+        setDeckInDetail: (deck) => dispatch(setDeckInDetail(deck)),
+        addDeck: (deck) => dispatch(addDeck(deck))
+    }
 }
 
 
