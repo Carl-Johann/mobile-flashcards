@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet, Platform, TouchableOpacity, TouchableNativeFeedback } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
-
+import { mainGreen } from '../../utils/colors'
 
 const QuizCompleted = ({ handleRestart, handleGoBack, correctQuestions, numberOfQuestions }) => {
 
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
         width: '45%',
         borderRadius: 4,
         marginBottom: '2%',
-        backgroundColor: '#4fbf40',
+        backgroundColor: mainGreen,
 
         shadowRadius: 4,
         shadowOpacity: 0.8,

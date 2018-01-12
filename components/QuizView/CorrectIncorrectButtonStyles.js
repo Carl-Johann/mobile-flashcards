@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native'
+import { mainGreen } from '../../utils/colors'
 
 const CorrectIncorrectButtonStyles = StyleSheet.create({
 
@@ -25,7 +26,7 @@ const CorrectIncorrectButtonStyles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
 
-        backgroundColor: '#4fbf40',
+        backgroundColor: mainGreen,
     },
 
     defaultShadow: {

@@ -1,6 +1,6 @@
 import React from 'react'
 import { View , Animated, StyleSheet, TouchableOpacity } from 'react-native'
-
+import { mainGreen } from '../../../utils/colors'
 
 const AddButton = ({ handleAdd, buttonOpacity }) => {
     return (
@@ -16,7 +16,7 @@ const AddButton = ({ handleAdd, buttonOpacity }) => {
 const styles = StyleSheet.create({
 
     buttonContainerStyle: {
-        backgroundColor: '#4fbf40',
+        backgroundColor: mainGreen,
         shadowRadius: 4,
         shadowOpacity: 0.8,
         shadowColor: 'rgba(0, 1, 0, 0.24)',

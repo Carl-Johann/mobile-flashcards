@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { View, Text, StyleSheet, TouchableOpacity, Platform, TouchableNativeFeedback, Animated } from 'react-native'
 import ShakeableInputFields from '../ShakeableInputField/ShakeableInputFields';
+import { mainGreen } from '../../utils/colors'
 
 class DeckSearchAndInfo extends Component {
 
@@ -53,7 +54,7 @@ const styles = StyleSheet.create({
         borderRadius: 2,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#4fbf40',
+        backgroundColor: mainGreen,
     },
 
     editText: {

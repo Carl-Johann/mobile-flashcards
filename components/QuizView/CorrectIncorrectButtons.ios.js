@@ -24,7 +24,7 @@ const CorrectIncorrectButtons = ({ handleQuestionAnswer,  currentQuestionIndex, 
                 style={[ styles.answerButton, styles.defaultShadow, { backgroundColor: 'green', marginBottom: 10 } ]}
                 onPress={ () => handleQuestionAnswer(true) }
             >
-                <Animated.Text styles={ styles.answerButtonText }>
+                <Animated.Text style={ styles.answerButtonText }>
                     Correct
                 </Animated.Text>
             </TouchableOpacity>
@@ -33,7 +33,7 @@ const CorrectIncorrectButtons = ({ handleQuestionAnswer,  currentQuestionIndex, 
                 style={[ styles.answerButton, styles.defaultShadow, { backgroundColor: 'red' } ]}
                 onPress={ () => handleQuestionAnswer(false) }
             >
-                <Animated.Text styles={ styles.answerButtonText }>
+                <Animated.Text style={ styles.answerButtonText }>
                     Incorrect
                 </Animated.Text>
             </TouchableOpacity>

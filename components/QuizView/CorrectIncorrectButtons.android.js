@@ -16,7 +16,7 @@ const CorrectIncorrectButtons = ({ handleQuestionAnswer, currentQuestionIndex, t
                 style={[ styles.answerButton, { backgroundColor: 'green', marginBottom: 15 } ]}
                 onPress={ () => handleQuestionAnswer(true) }
             >
-                <Text styles={ styles.answerButtonText }>
+                <Text style={ styles.answerButtonText }>
                     Correct
                 </Text>
             </TouchableNativeFeedback>
@@ -25,7 +25,7 @@ const CorrectIncorrectButtons = ({ handleQuestionAnswer, currentQuestionIndex, t
                 style={[ styles.answerButton, { backgroundColor: 'red' } ]}
                 onPress={ () => handleQuestionAnswer(false) }
             >
-                <Text styles={ styles.answerButtonText }>
+                <Text style={ styles.answerButtonText }>
                     Incorrect
                 </Text>
             </TouchableNativeFeedback>

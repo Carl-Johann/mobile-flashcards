@@ -5,6 +5,7 @@ import { NavigationActions } from 'react-navigation'
 import { getAllDecks, getSpecificDeck } from '../utils/api'
 import { Ionicons, MaterialIcons, Entypo } from '@expo/vector-icons'
 import ActionButton from 'react-native-action-button';
+import { mainGreen } from '../utils/colors'
 
 
 class DetailDeckView extends Component {
@@ -12,7 +13,7 @@ class DetailDeckView extends Component {
     static navigationOptions = ({ navigation }) => ({
         title: "Deck Detail",
         headerTintColor: '#ffffff',
-        headerStyle: { backgroundColor: '#4fbf40' },
+        headerStyle: { backgroundColor: mainGreen },
     })
 
 
@@ -41,8 +42,13 @@ class DetailDeckView extends Component {
                         { Platform.OS === 'ios' ?
                             <View>
                                 <View style={{ flexDirection: 'row' }}>
-                                    {/*<TouchableOpacity style={[ styles.buttonContainerStyleiOS, { width: '49%', marginBottom: '2%' } ]} onPress={ () => goBackToFlatlist() } >*/}
-                                    <TouchableOpacity style={[ styles.buttonContainerStyleiOS, { width: '49%', marginBottom: '2%' } ]} onPress={ () => { if (goBackToFlatlist === undefined) { this.props.navigation.navigate("DeckView") } else { goBackToFlatlist() } }} >
+                                    <TouchableOpacity style={[ styles.buttonContainerStyleiOS, { width: '49%', marginBottom: '2%' } ]}
+                                        onPress={ () => {
+                                            if (goBackToFlatlist === undefined) {
+                                                this.props.navigation.navigate("DeckView") } else { goBackToFlatlist()
+                                            }
+                                        }}
+                                    >
                                         { goBackButton() }
                                     </TouchableOpacity>
 
@@ -60,7 +66,7 @@ class DetailDeckView extends Component {
                         :
                             <View>
                                 <View style={{ flexDirection: 'row' }}>
-                                    <TouchableNativeFeedback style={[ styles.buttonStyleAndroid, { width: '49%', marginBottom: '2%' } ]} onPress={ () => goBackToFlatlist() } >
+                                    <TouchableNativeFeedback style={[ styles.buttonStyleAndroid, { width: '49%', marginBottom: '2%' } ]} onPress={ () => { if (goBackToFlatlist === undefined) { this.props.navigation.navigate("DeckView") } else { goBackToFlatlist() } }} >
                                         { goBackButton() }
                                     </TouchableNativeFeedback>
 
@@ -96,8 +102,10 @@ const styles = StyleSheet.create({
     },
 
     buttonContainerStyleiOS: {
-        backgroundColor: '#4fbf40',
+        backgroundColor: mainGreen,
         justifyContent: 'center',
+
+        // marginBottom: '2%',
 
         height: 35,
         borderRadius: 4,
@@ -116,7 +124,7 @@ const styles = StyleSheet.create({
     },
 
     buttonStyleAndroid: {
-        backgroundColor: '#4fbf40',
+        backgroundColor: mainGreen,
         justifyContent: 'center',
 
         height: 35,

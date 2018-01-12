@@ -4,11 +4,13 @@ import { connect } from 'react-redux'
 import { setDeck } from '../../utils/api'
 import { addDeck, setDeckInDetail } from '../../actions/index'
 import ShakeableInputFields from './../ShakeableInputField/ShakeableInputFields'
+import { mainGreen } from '../../utils/colors'
+
 
 class CreateDeck extends Component {
     static navigationOptions = ({ navigation }) => ({
         headerTintColor: '#ffffff',
-        headerStyle: { backgroundColor: '#4fbf40' },
+        headerStyle: { backgroundColor: mainGreen },
     })
 
     state = {
@@ -27,6 +29,8 @@ class CreateDeck extends Component {
         }
 
         setDeck( (createdDeck) => { this.props.addDeck(createdDeck) }, deck )
+
+        // We navigate to 'DetailDeckView', therefore we need to set deckInDetail
         this.props.setDeckInDetail(deck)
 
         setTimeout(() => {

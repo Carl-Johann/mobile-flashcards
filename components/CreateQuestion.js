@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, Platform, TouchableNativeFeedback, Animated, Easing, Picker } from 'react-native'
 import { setQuestion, getAllDecks } from '../utils/api'
 import { Ionicons, Entypo } from '@expo/vector-icons'
+import { mainGreen } from '../utils/colors'
 
 import SearchBar from 'react-native-searchbar'
 import ShakeableInputFields from './ShakeableInputField/ShakeableInputFields';
@@ -19,7 +20,7 @@ class CreateQuestion extends Component {
 
     static navigationOptions = ({ navigation }) => ({
         headerTintColor: '#ffffff',
-        headerStyle: { backgroundColor: '#4fbf40' },
+        headerStyle: { backgroundColor: mainGreen },
     })
 
     state = {
@@ -175,7 +176,7 @@ class CreateQuestion extends Component {
                                     data={ this.props.reduxDecks }
                                     iOSPadding={ false }
                                     animationDuration={ 400 }
-                                    selectionColor={ '#4fbf40' }
+                                    selectionColor={ mainGreen }
                                     placeholder={ "Select Deck ..." }
                                     ref={ (ref) => this.searchBar = ref }
                                     handleChangeText={ results => this.handleResults(results) }

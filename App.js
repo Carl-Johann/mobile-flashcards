@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Platform, StatusBar } from 'react-native';
+import { StyleSheet, Text, View, Platform, StatusBar, SafeAreaView } from 'react-native';
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import reduxDecks from './reducers/index'
 import { StackNavigator, TabNavigator } from 'react-navigation'
 import { setLocalNotification } from './ReminderNotification/ReminderNotification'
+import { mainGreen } from './utils/colors'
 
 import CreateQuestion from './components/CreateQuestion'
 import DeckView from './components/DeckView/DeckView'
@@ -50,9 +51,9 @@ const TabsNavigator = TabNavigator({
     header: null,
   },
   tabBarOptions: {
-    activeTintColor: Platform.OS === 'ios' ? '#4fbf40' : 'white',
+    activeTintColor: Platform.OS === 'ios' ? mainGreen : 'white',
     style: {
-      backgroundColor: Platform.OS === 'ios' ? 'white' : '#4fbf40',
+      backgroundColor: Platform.OS === 'ios' ? 'white' : mainGreen,
     }
   }
 })
@@ -77,29 +78,6 @@ const MyTransition = (index, position) => {
     }
 }
 
-// export const MyCustomTransition = (index, position) => {
-//     const inputRange = [index - 1, index, index + 0.99, index + 1];
-
-//     const opacity = position.interpolate({
-//         inputRange,
-//         outputRange: ([0, 1, 1, 0]),
-//     });
-
-//     const translateX = 0;
-//     const translateY = position.interpolate({
-//         inputRange,
-//         outputRange: ([50, 0, 0, 0]),
-//     });
-
-//     return {
-//         opacity,
-//         transform: [
-//             { translateX },
-//             { translateY }
-//         ],
-//     };
-// };
-
 let TransitionConfiguration = () => {
     return {
         screenInterpolator: (sceneProps) => {
@@ -110,7 +88,6 @@ let TransitionConfiguration = () => {
             const transition = params.transition || 'default'
 
             return {
-              // myCustomTransition: MyCustomTransition(index, position),
               default: MyTransition(index, position),
             }[transition]
         }
@@ -147,7 +124,7 @@ const MainStackNavigator = StackNavigator({
     screen: QuizView,
     navigationOptions: {
       headerTintColor: '#ffffff',
-      headerStyle: { backgroundColor: '#4fbf40' }
+      headerStyle: { backgroundColor: mainGreen }
     }
   },
 
@@ -160,7 +137,7 @@ const MainStackNavigator = StackNavigator({
 const GreenStatusBar = () => {
   return (
     <View style={{
-      backgroundColor: '#4fbf40',
+      backgroundColor: mainGreen,
       height: Constants.statusBarHeight,
       zIndex: 10
     }}>
@@ -178,10 +155,10 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={ createStore(reduxDecks) }>
-        <View style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1 }}>
           <GreenStatusBar />
           <MainStackNavigator />
-        </View>
+        </SafeAreaView>
       </Provider>
     )
   }

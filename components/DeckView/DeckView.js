@@ -105,11 +105,7 @@ const styles = StyleSheet.create({
 
 })
 
-const mapStateToProps = ({ reduxDecks }) => {
-  return {
-    reduxDecks
-  }
-}
+const mapStateToProps = ({ reduxDecks }) => ({ reduxDecks })
 
 
 const mapDispatchToProps = (dispatch) => {
@@ -120,7 +116,4 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(DeckView)
+export default connect( mapStateToProps, { setDeckInDetail, addAllDecks } )(DeckView)

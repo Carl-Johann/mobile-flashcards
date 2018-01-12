@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Platform, TouchableNativeFeedback } from 'react-native'
 import { clearLocalNotification, setLocalNotification } from '../../ReminderNotification/ReminderNotification'
-
+import { mainGreen } from '../../utils/colors'
 import CardSlide from './CardSlide'
 import QuizCompleted from './QuizCompleted'
 
@@ -11,7 +11,7 @@ class QuizView extends Component {
      static navigationOptions = ({ navigation }) => ({
         title: "Quiz",
         headerTintColor: '#ffffff',
-        headerStyle: { backgroundColor: '#4fbf40' },
+        headerStyle: { backgroundColor: mainGreen },
     })
 
     state = {
